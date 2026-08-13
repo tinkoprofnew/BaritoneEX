@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "id": "baritone-meteor",
+  "id": "baritone-astera",
   "version": "${version}",
 
-  "name": "Baritone",
+  "name": "Baritone-EX",
   "description": "Google Maps for Blockgame",
   "authors": [
-    "leijurv", "Brady"
+    "Tinkoprof","leijurv (og dev)", "Brady (og dev)"
   ],
   "contact": {
     "homepage": "https://github.com/cabaletta/baritone",
@@ -21,7 +21,7 @@
   "entrypoints": {
   },
   "mixins": [
-      "mixins.baritone-meteor.json"
+      "mixins.baritone-astera.json"
   ],
   "depends": {
     "fabricloader": ">=0.19.3",
