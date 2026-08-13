@@ -42,24 +42,24 @@ public class CreateDistTask extends BaritoneGradleTask {
     @TaskAction
     protected void exec() throws Exception {
         super.doFirst();
-        super.verifyArtifacts();
 
-        // Define the distribution file paths
-        Path api = getRootRelativeFile("dist/" + getFileName(artifactApiPath));
-        Path standalone = getRootRelativeFile("dist/" + getFileName(artifactStandalonePath));
-        Path unoptimized = getRootRelativeFile("dist/" + getFileName(artifactUnoptimizedPath));
-
-        // NIO will not automatically create directories
         Path dir = getRootRelativeFile("dist/");
         if (!Files.exists(dir)) {
-            Files.createDirectory(dir);
+            Files.createDirectories(dir);
         }
 
-        // Copy build jars to dist/
-        // TODO: dont copy files that dont exist
-        Files.copy(this.artifactApiPath, api, REPLACE_EXISTING);
-        Files.copy(this.artifactStandalonePath, standalone, REPLACE_EXISTING);
-        Files.copy(this.artifactUnoptimizedPath, unoptimized, REPLACE_EXISTING);
+        Path api = getRootRelativeFile("dist/baritone-api-fabric-" + getProject().getVersion() + ".jar");
+
+        Path sourceJar = null;
+        try {
+            sourceJar = getProject().getTasks().getByName("remapJar").getOutputs().getFiles().getSingleFile().toPath();
+        } catch (Exception ignored) {
+            sourceJar = this.artifactPath;
+        }
+
+        if (sourceJar != null && Files.exists(sourceJar)) {
+            Files.copy(sourceJar, api, REPLACE_EXISTING);
+        }
 
         // Calculate all checksums and format them like "shasum"
         List<String> shasum = Files.list(getRootRelativeFile("dist/"))
